@@ -7,10 +7,11 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class ="quote-box">
+    <div class="quote-box">
         <h2>Quote of the day</h2>
-        <blockquote id ="quote">Loading...</blockquote>
-        <span id = "author">Loading...</span>
+        <div class="loader" id="loader"></div>
+        <blockquote id="quote" style="display: none;">Loading...</blockquote>
+        <span id="author" style="display: none;">Loading...</span>
         <div>
             <button onclick="getquote(api_url)">New Quote</button>
             <button onclick="Tweet()"><img src="x.png">Tweet</button>
@@ -19,23 +20,33 @@
 <script>
     const quote = document.getElementById("quote");
     const author = document.getElementById("author");
+    const loader = document.getElementById("loader");
     const api_url = "https://api.quotable.io/random";
 
-    async function getquote(url){
+    async function getquote(url) {
+        // Show loader and hide the quote and author
+        loader.style.display = "block";
+        quote.style.display = "none";
+        author.style.display = "none";
+
         const response = await fetch(url);
-        var data = await response.json();
-        
+        const data = await response.json();
+
+        // Hide loader and show the quote and author
+        loader.style.display = "none";
+        quote.style.display = "block";
+        author.style.display = "block";
+
         quote.innerHTML = data.content;
         author.innerHTML = data.author;
-    
     }
+
     getquote(api_url);
 
-    function Tweet(){
-        window.open("https://twitter.com/intent/tweet?text=" + quote.innerHTML + "---- by "+ 
-        author.innerHTML , "Tweet Window", "width=600, height=300");
+    function Tweet() {
+        window.open("https://twitter.com/intent/tweet?text=" + quote.innerHTML + "---- by " + 
+        author.innerHTML, "Tweet Window", "width=600, height=300");
     }
 </script>
-
 </body>
 </html>
